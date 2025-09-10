@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pytest-jubilant-extension-meta"
+dynamic = ["version"]
+description = "Extension framework for pytest-jubilant"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "pytest",
+]
+license = "Apache-2.0"
+
+[tool.hatch.version]
+path = "pytest_jubilant_extension_meta/__init__.py"
+
+[project.urls]
+Homepage = "https://github.com/canonical/pytest-jubilant-extension-meta"
+Issues = "https://github.com/canonical/pytest-jubilant-extension-meta/issues"
+Repository = "https://github.com/canonical/pytest-jubilant-extension-meta"
+
+[project.entry-points."pytest_jubilant.meta"]
+framework = "pytest_jubilant_extension_meta"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.3.5",
+    "pytest-cov>=4.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.5.0",
+]
+
+[tool.ruff]
+line-length = 99
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "N", "B", "UP", "C4", "ISC", "PIE", "T20", "PYI", "PT", "RUF"]
+ignore = ["E501", "UP007"]
+
+[tool.mypy]
+python_version = "3.8"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
