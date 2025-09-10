@@ -6,12 +6,14 @@
 
 from .base import BaseExtension, DefaultExtension
 from .manager import ExtensionManager, extension_manager
+from .juju import ExtensionAwareJuju
 
 __all__ = [
     "BaseExtension",
     "DefaultExtension", 
     "ExtensionManager",
     "extension_manager",
+    "ExtensionAwareJuju",
 ]
 
 __version__ = "99999.99999.99999"
