@@ -67,6 +67,6 @@ class DefaultExtension(BaseExtension):
         """No-op deployment argument modification."""
         return kwargs
     
-    def post_deploy_hook(self, juju, app_name, charm):
+    def post_deploy_hook(self, juju, app, charm):
         """No-op post-deployment hook."""
         pass
