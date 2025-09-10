@@ -14,4 +14,4 @@ __all__ = [
     "extension_manager",
 ]
 
-__version__ = "0.1.0"
+__version__ = "99999.99999.99999"
