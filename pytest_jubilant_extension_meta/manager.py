@@ -73,26 +73,49 @@ class ExtensionManager:
         extension_class = self.get_extension(name)
         return extension_class()
     
+    def get_active_extension(self, config) -> BaseExtension:
+        """Get the active extension based on CLI options."""
+        extension_name = config.getoption("--extension", default=None)
+        if extension_name:
+            return self.get_extension_instance(extension_name)
+        else:
+            # Import here to avoid circular imports
+            from .base import DefaultExtension
+            return DefaultExtension()
+    
     def register_cli_options(self, parser):
-        """Register CLI options for all available extensions."""
+        """Register a single --extension CLI option for all available extensions."""
         try:
             group = parser.getgroup("jubilant")
         except ValueError:
             # Group doesn't exist yet, create it. this is probably invasive. pytest-jubilant should handle this rather.
             group = parser.getgroup("jubilant", "pytest-jubilant options")
         
-        for extension_class in self._extensions.values():
-            # Create temporary instance to get metadata
-            try:
-                temp_instance = extension_class()
-                group.addoption(
-                    f"--{temp_instance.cli_option}",
-                    action="store_true",
-                    default=False,
-                    help=temp_instance.help_text,
-                )
-            except Exception as e:
-                logger.warning(f"Failed to register CLI option for extension {extension_class}: {e}")
+        # Build choices from available extensions
+        choices = list(self._extensions.keys())
+        if choices:
+            # Create help text with available extensions
+            help_text = "Enable extension for testing. Available extensions: " + ", ".join(choices)
+            
+            # Get extension descriptions for help
+            descriptions = []
+            for ext_name, ext_class in self._extensions.items():
+                try:
+                    temp_instance = ext_class()
+                    descriptions.append(f"{ext_name}: {temp_instance.help_text}")
+                except Exception:
+                    descriptions.append(f"{ext_name}: Extension available")
+            
+            if descriptions:
+                help_text += ". " + "; ".join(descriptions)
+            
+            group.addoption(
+                "--extension",
+                action="store",
+                choices=choices,
+                default=None,
+                help=help_text,
+            )
 
 
 # Global extension manager instance

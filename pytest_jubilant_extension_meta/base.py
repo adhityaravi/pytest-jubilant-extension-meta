@@ -16,11 +16,6 @@ class BaseExtension(ABC):
         """Extension name for CLI options and identification."""
         pass
     
-    @property
-    @abstractmethod
-    def cli_option(self) -> str:
-        """CLI option name (e.g., 'meshify' for --meshify)."""
-        pass
     
     @property
     @abstractmethod
@@ -39,11 +34,11 @@ class BaseExtension(ABC):
         pass
     
     @abstractmethod
-    def post_deploy_hook(self, juju, app_name: str, charm) -> None:
+    def post_deploy_hook(self, juju, app: str, charm) -> None:
         """Execute after deployment."""
         pass
     
-    def pre_deploy_hook(self, juju, charm, app_name: str) -> None:
+    def pre_deploy_hook(self, juju, app: str, charm) -> None:
         """Execute before deployment (optional)."""
         pass
     
@@ -59,9 +54,6 @@ class DefaultExtension(BaseExtension):
     def name(self) -> str:
         return "default"
     
-    @property
-    def cli_option(self) -> str:
-        return "default"
     
     @property
     def help_text(self) -> str:
